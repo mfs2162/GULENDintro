@@ -1,0 +1,316 @@
+---
+title: "GULEND Introduction"
+author: "Melody Schwenk"
+date: "2023-09-09"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(maps)
+library(tidyverse)
+library(dplyr)
+library(gridExtra)
+library(shiny)
+library(DT)
+library(plotly)
+library(kableExtra)
+library(reshape2)
+library(knitr)
+```
+# Introduction paragraph
+
+Welcome to my introduction to GULEND! I'm Melody Schwenk, and I'm a PhD student in in Educational Neurooscience at Gallaudet University. I'm passionate about using technology to understand and improve access for Deaf people. In this introduction, I'll give you a brief overview of my research interests and goals as well as who I am as a human.
+
+
+# The World Through My Shoes 🌍👟
+
+Who needs a plane ticket when you can globetrot with me virtually? From the canals of Venice to the bustling streets of Tokyo, I've made footprints all over. The map below paints my international escapades in a shade of dreamy teal. Let your wanderlust roam!
+```{r, echo=FALSE}
+
+# International Map Data
+map_data_international <- map_data("world")
+
+# Countries visited
+countries_visited <- c("UK", "France", "Austria", "Germany", "Netherlands", "Sweden", 
+                       "Japan", "Mexico", "Bahamas", "Italy", "Canada")
+
+# International Places I've Visited Plot
+ggplot() +
+  geom_polygon(data = map_data_international, aes(x=long, y = lat, group = group), fill = "white", color="#534e52") +
+  geom_polygon(data = map_data_international %>% filter(region %in% countries_visited), 
+               aes(x=long, y = lat, group = group), fill = "#94e1ea") +
+  labs(title = "International Places I've Visited") +
+  theme_minimal() +
+  theme(plot.title = element_text(color = "#534e52", size = 16, face = "bold"))
+```
+
+
+# Coast to Coast: My American Dream 🇺🇸✨
+The Land of the Free, and the Home of the Brave... and quite a few of my travel tales! Charting my journey across the United States, this map splashes the states I've explored in a rosy hue. From sunny Californian beaches to the historic streets of Massachusetts, here's a peek into my American adventures.
+
+```{r, echo=FALSE}
+# US Map Data
+map_data_us <- map_data("state")
+
+# US states visited
+states_visited <- c("utah", "new york", "new jersey", "delaware", "maryland", "district of columbia", "virginia", 
+                    "south carolina", "florida", "texas", "california", "connecticut", "massachusetts")
+
+# US States I've Visited Plot
+ggplot() +
+  geom_polygon(data = map_data_us, aes(x=long, y = lat, group = group), fill = "white", color="#534e52") +
+  geom_polygon(data = map_data_us %>% filter(region %in% states_visited), 
+               aes(x=long, y = lat, group = group), fill = "#fdcdcd") +
+  labs(title = "US States I've Visited") +
+  theme_minimal() +
+  theme(plot.title = element_text(color = "#534e52", size = 16, face = "bold"))
+
+
+```
+
+
+# My Never-ending School Saga!
+
+From the age of three, I've been hitting the books and chasing degrees. Now at 31, some might say I'm "over-educated" or perhaps just a professional student. But hey, who's counting? Dive into my educational odyssey below, where the school names speak volumes and the years tell tales!
+
+```{r, echo=FALSE}
+# My Education Timeline Plot
+
+education_data <- data.frame(Year = c(2010, 2015, 2017, 2019, 2019, 2022, 2026),
+                             Degree = c("High School", "Bachelors", "Masters in Clinical Psychology", 
+                                        "Masters in Deaf Education", "Started PhD in Clinical Psychology", 
+                                        "Started PhD in Educational Neuroscience", "Ph.D graduation"),
+                             School = c("St. Francis Preparatory School", "Stony Brook University", 
+                                        "Columbia University", "Hunter College", "Gallaudet", "Gallaudet", "Graduation (hopefully!)"))
+
+ggplot(education_data, aes(x = Year, y = Degree)) +
+  geom_point(size=4, color="#cec0fc") +
+  geom_path(aes(group=1), colour="#cec0fc") +
+  geom_label(aes(label = School), nudge_y = 0.5, size = 3, color = "#816C85") +
+  theme_minimal() +
+  labs(title = "My Education Timeline") +
+  theme(
+    plot.title = element_text(color = "#534e52", size = 16, face = "bold"),
+    axis.title = element_text(color = "#816C85"),
+    axis.text = element_text(color = "#534e52")
+  )
+
+```
+
+# My Academic Show and Tell!
+
+Every academic has their milestones, but have you seen mine? I've been scribbling away, talking shop, and putting my best foot forward in the world of research. Without being too modest (if I do say so myself), check out my not-so-humble-brags below! If they seem like a lot, well... that's because they are. 😉 Dive in and see for yourself!My Academic Contributions Over Time
+
+```{r, echo=FALSE}
+# Data
+df <- data.frame(
+  Year = c(2020, 2021, 2022, 2023, 2024),
+  Publications = c(1, 1, 2, 1, 1),
+  Presentations = c(1, 2, 1, 7, 3),
+  Talks = c(0, 0, 0, 0, 1)
+)
+
+# Melt the data for a stacked bar chart
+library(reshape2)
+df_melted <- melt(df, id.vars = "Year")
+
+# Stacked Bar Chart with enhanced aesthetics using provided colors
+ggplot(df_melted, aes(x = as.factor(Year), y = value, fill = variable)) +
+  geom_bar(stat = "identity", width = 0.7) +
+  labs(
+    title = "My Academic Contributions Over Time",
+    x = "Year",
+    y = "Number of Contributions",
+    fill = "Contribution Type"
+  ) +
+  theme_minimal() +
+  scale_fill_manual(values = c("Publications" = "#fdcdcd", "Presentations" = "#cec0fc", "Talks" = "#94e1ea")) +
+  theme(
+    plot.title = element_text(color = "#534e52", size = 18, face = "bold"),
+    axis.title = element_text(color = "#816C85"),
+    axis.text = element_text(color = "#534e52"),
+    legend.title = element_text(color = "#816C85"),
+    legend.text = element_text(color = "#534e52"),
+    panel.grid.major = element_line(color = "#D3BFD1"),
+    panel.grid.minor = element_line(color = "#EAE7E2")
+  )
+
+
+```
+
+# Rolling Out the Red Carpet for My Academic Achievements 📜🔍
+
+Go on, select from the dropdown menu and bask in the glow of my ever-growing list of publications, talks, and presentations. The sheer volume might just... overwhelm you (but in a good way, I promise). Prepare to be amazed (and possibly a tad bit jealous)!
+
+
+```{r, echo=FALSE}
+# Data
+publications <- c(
+"Willis, A. S., Leannah, C., Schwenk, M., Palagano, J., & Quandt, L. C. (2023). Differences in biological motion perception associated with hearing status and signed language use. Pre-printed at PsyArXiv. Submitted for peer-review publication in the Journal of Experimental Psychology.",
+
+"Willis, A., Schwenk, M., Quandt, L.C. (2022). Prior technology experiences shape signers’ emotional responses to signing avatars. Presented at the 14th conference of
+Theoretical Issues in Sign Language Research.",
+
+"Quandt, L. C., Willis, A. W., Schwenk, M., Weeks, K., & Ferster, R. (2022). Attitudes toward signing avatars vary depending on hearing status, age of signed language acquisition, and avatar type. Frontiers in Psychology, 13. 10.3389/fpsyg.2022.730917")
+
+talks <- c(
+  "2024 - Lightening Talk, “ASL Fluency and Early Exposure Unlock Hidden Cognitive Superpower in Deaf People,” 2024 AAAS Annual Meeting"
+)
+
+presentations <- c(
+  "Bosworth, R., Quandt, L.C., & Schwenk, M. (2023) Looking Preferences for Signing Avatars: Does Naturalness Matter? To be presented at Psychonomic Society’s 2023 Annual Meeting.",
+  "Schwenk, M. & Quandt, L.C. (2023) The Influence of Fluency and Age of Acquisition on Perceptual Reasoning Skills in American Sign Language Users. To be presented at the Annual Meeting of the Society for the Neurobiology of Language.",
+"Schwenk, M. & Quandt, L.C. (2023) Impact of American Sign Language Fluency on Response Time and Accuracy in Visual-Spatial Tasks. To be presented at the Annual Meeting for the Society for Neuroscience.",
+"Schwenk, M. & Quandt, L.C. (2023) The Role of ASL Handshape Classifiers in Visual Spatial Skill Development: A Comparative Analysis. To be presented at the Boston University Conference on Language Development.",
+"Schwenk, M. & Quandt, L.C. (2023) Assessing The Impact of Self-Reported and Objective Fluency on Visual Spatial Tasks in Deaf Signers. To be presented at the Society for the Study of Human Development.", 
+"Schwenk, M., Quandt, L. C., Bosworth, R. (2023). Sign-naïve and native signing infants’ visual preferences for signing avatars. SRCD 2023 Biennial Meeting in Salt Lake City, Utah.",
+"Quandt, L. C., Leannah, C., Schwenk, M., & Willis, A. S. (2023) Deafness and ASL fluency each differentially impact biological motion perception. Annual meeting of the Cognitive Neuroscience Society.",
+"Quandt, L.C., Leannah, C., Schwenk, M., Willis, A. (2022). Effects of language experience and being deaf upon biological motion processing. Annual Meeting of the Cognitive Neuroscience Society in San Francisco, CA.",
+"Schwenk, M., Willis, A. S., Weeks, K., Ferster, R., & Quandt, L. C. (2021). Attitudes towards sign language avatars in the practice of teletherapy and assessment. American Psychological Association Annual Convention.",
+"Quandt, L. C., Willis, A. S., Weeks, K., Wang, J., Lamberton, J., Schwenk, M. & Malzkuhn, M. ASL + VR: Lessons from the first three years of Signing Avatars & Immersive Learning (SAIL). CIRCLS’21 Convening.",
+    "Willis, A. S., Weeks, K., Schwenk, M., & Quandt, L. C. (2020). Behavioral and neural responses to American Sign Language avatars. Annual Meeting of the Society for the Neurobiology of Language."
+)
+
+# Interactive UI
+selectInput("selection", 
+            label = "Choose a category:",
+            choices = c("Publications", "Talks", "Presentations"), 
+            selected = "Publications")
+
+# Display the corresponding list based on user's selection
+conditionalPanel(
+  condition = "input.selection == 'Publications'",
+  HTML(paste(publications, collapse = '<br><br>'))
+)
+
+conditionalPanel(
+  condition = "input.selection == 'Talks'",
+  HTML(paste(talks, collapse = '<br><br>'))
+)
+
+conditionalPanel(
+  condition = "input.selection == 'Presentations'",
+  HTML(paste(presentations, collapse = '<br><br>'))
+)
+```
+# Journey Through Recognition 
+  
+Embarking on an academic and professional path is both challenging and rewarding. This beeswarm plot illuminates the cascade of awards and research support I've been honored with over the years. Each dot, while representing an achievement, is also a testament to the journey, passion, and dedication to my craft.
+
+```{r, echo=FALSE}
+awards <- data.frame(
+  Year = c(rep(2023, 9), rep(2022, 2), rep(2021, 2), 2020, 2019, rep(2013, 2), 2012, rep(2010, 3)),
+  Award = c(
+    "VL2 Student Leadership Team Mini-Grant",
+    "Paula Menyuk Travel Award for BUCLD 48",
+    "UC Davis/SDSU ERP Boot Camp",
+    "Ambassador Scholar, Society for Neuroscience",
+    "Johnson Scholarship Foundation, Gallaudet University",
+    "Laboratory for Language & Cognitive Neuroscience Summer Research Support Award, San Diego State University",
+    "Graduate Student Research Travel Award, Gallaudet University",
+    "Graduate Student Travel Award, Society for Research in Child Development",
+    "Inclusive Assessment of Multi-Modal Multilinguals (IAM3) Institute travel, housing, and stipend, National Science Foundation",
+    "Seed Research Grant: Impact of American Sign Language Fluency on Visuospatial Tasks, Gallaudet University",
+    "Travel Award (Osaka, Japan), National Science Foundation",
+    "Division 12 Second Place Poster at the APA Annual Convention 2021",
+    "Gallaudet University, Joseph and Ann Mancuso Memorial Fund",
+    "Gallaudet University, Elizabeth Benson Scholarship",
+    "Hunter College Graduate Student Scholarship",
+    "State University of New York Scholarship",
+    "Stony Brook University Scholarship",
+    "City University of New York, Queens College Scholarship",
+    "New York University Liberal Arts Scholarship",
+    "DC37 Scholarship",
+    "AFSCME Scholarship")
+)
+
+datatable(awards, 
+          options = list(
+            pageLength = 10,  # Number of rows per page
+            autoWidth = TRUE, # Ensure table fits width of container
+            searching = FALSE, # Turn off the search box
+            lengthChange = FALSE # Don't allow changing number of records displayed
+          ),
+          rownames = FALSE) %>% 
+  formatStyle(columns = 'Year', 
+              backgroundColor = styleEqual(c(2023, 2022, 2021), 
+                                           c('#FDCDCF', '#B2E2E2', '#D1BAD2')))
+
+
+```
+# 🎬 Lights, Camera, Action! 📸
+
+Ah, the fascinating world of media! It's always a surreal moment when your work captures the spotlight. From scholarly pieces to news articles, here's where my academic journey got a little bit of media love.
+
+## News Articles
+```{r, echo=FALSE}
+
+news_articles <- data.frame(
+  Date = c("August 3, 2023", "January 24, 2022"),
+  Title = c("Seven Gallaudet Students Dive into Language Research at Summer Institute in Sweden", 
+            "Kicking off 2022 with two publications from VL2"),
+  Link = c("https://gallaudet.edu/academic-affairs/seven-gallaudet-students-dive-into-language-research-at-summer-institute-in-sweden/",
+           "https://gallaudet.edu/visual-language-visual-learning/numeracy-and-educational-neuroscience-lab-nens/kicking-off-2022-with-two-publications-from-vl2/")
+)
+
+# Embedding the links in the Title column
+news_articles$Title <- sprintf("[%s](%s)", news_articles$Title, news_articles$Link)
+
+# Creating the table for HTML output
+kable(news_articles[, c("Date", "Title")], 
+      format = "html",  # Specify the format explicitly
+      col.names = c("Date", "Title & Link"),
+      align = 'l', 
+      escape = FALSE) %>%
+  kable_styling("hover", 
+                full_width = FALSE, 
+                bootstrap_options = c("striped", "bordered"), 
+                font_size = 14)
+```
+
+# My Unique Skills & Hobbies Chart
+
+The following interactive chart presents a whimsical take on the hobbies and unique skills I've developed over the years. Each dot represents a hobby or skill, with its position determined by the time I've spent on it and my proficiency in it.  
+
++ X-axis (Time Spent): This represents the average minutes per day I've dedicated to each hobby.
++ Y-axis (Proficiency): This is my self-rated proficiency level, where 1 indicates I'm a novice and 7 means I consider myself an expert.
++ Color Gradient: Hobbies where I'm closer to being a novice are in a light pink shade, while those where I'm an expert are in light blue.
++ Interactive Feature: Hover over each dot to see a description of the hobby or skill it represents.   
+This will give you a lighthearted insight into my day-to-day activities and quirks!  
+Now, dive in and explore! Don't forget to hover over each dot for a delightful description.
+```{r, echo=FALSE}
+# Data
+hobby_desc <- c("Swift Talk Specialist", "Endless Student Syndrome", "Express Apartment Clean-Up", 
+                "Fitted Sheet Wrestling", "Makeup Tightrope Walker", "Odor Ninja", "RoboTalk Reducer",
+                "Advisor Mood Detective", "Neuroscience Nightingale", "Swift Song Sleuth", "Elle Woods Echo",
+                "Research Over Recharge", "Mastering the Silent Sigh", "Deciphering Inaudible Captions", 
+                "Telepathic Lip Reading", "Conversational Pictionary", "Choreographing the Perfect Eyebrow Dance",
+                "Navigating the 'What's That Sound?' Game", "Perfecting the Fake Laugh", "Flashlight Charades",
+                "Perfecting the Art of Procrastination", "Telepathically Trying to Make the Coffee Brew Faster",
+                "Searching for Lost Socks in the Laundry Dimension", "Attempting to Remember Why You Walked into a Room", 
+                "Joining the Hunt for the End of the Tape Roll")
+
+time_spent <- c(1280, 1400, 530, 680, 580, 640, 910, 770, 1230, 1190, 1260, 1440, 780, 620, 1100, 1350, 850, 540, 700, 910, 1350, 500, 860, 800, 625)
+
+proficiency <- c(7, 7, 2, 3, 3, 3, 5, 5, 6, 6, 7, 7, 7, 2, 5, 7, 6, 3, 5, 3, 2, 3, 5, 7, 5)
+
+df_hobbies <- data.frame(hobby_desc, time_spent, proficiency)
+
+# ggplot Object
+p <- ggplot(df_hobbies, aes(x = time_spent, y = proficiency, text = hobby_desc)) +
+  geom_point(aes(color=proficiency), size=4) +
+  scale_color_gradient(low="#fdcdcd", high="#94e1ea") +
+  labs(
+    title = "Hobbies vs. Proficiency",
+    x = "Time Spent (minutes/day)",
+    y = "Proficiency (1=Novice to 7=Expert)"
+  ) +
+  theme_minimal() +
+  theme(axis.text.y = element_blank())  # Removing y-axis text as it will be available on hover
+
+# Convert to plotly and render
+plotly::ggplotly(p, tooltip="text")
+
+```
